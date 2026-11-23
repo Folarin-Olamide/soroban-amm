@@ -518,8 +518,8 @@ Defined in [contracts/staking/src/lib.rs](../contracts/staking/src/lib.rs) as `S
 | 11 | `NoActiveLock` | `extend_lock` was called on a position with no active lock. | Stake with a lock duration first. |
 | 12 | `InvalidDuration` | A lock duration argument was zero where a positive value is required. | Specify a positive lock duration in seconds. |
 | 13 | `NothingToStake` | A stake call supplied neither a positive amount nor a lock duration. | Pass a positive amount, a lock duration, or both. |
-| 14 | `InvalidBoostConfig` | The boost bounds were non-positive, or the max was below the min. | Pass `0 < min_boost <= max_boost`. |
-| 15 | `InvalidLockDuration` | The lock-duration bounds were non-positive, or the max was below the min. | Pass `0 < min_lock_duration <= max_lock_duration`. |
+| 14 | `InvalidBoostConfig` | The boost bounds were non-positive, the max was below the min, or the max exceeded `MAX_BOOST_SCALED` (4x = `40_000`). | Pass `0 < min_boost <= max_boost <= 40_000`. |
+| 15 | `InvalidLockDuration` | The lock-duration bounds were non-positive, the max was below the min, the max exceeded `MAX_LOCK_DURATION` (4 years), or `now + duration` would overflow a `u64`. | Pass `0 < min_lock_duration <= max_lock_duration <= 126_144_000` (4 years in seconds). |
 | 16 | `MaxRewardPoolExceeded` | `add_rewards` would push the undistributed reward balance above the configured cap. | Lower the amount added, or raise the cap with `set_max_reward_pool_balance`. |
 | 17 | `InvalidMaxBalance` | A new max-balance cap was set below the current undistributed reward balance. | Use a cap of `0` (no cap) or one at least the current undistributed balance. |
 | 18 | `NoStakers` | `update_rewards` was called while the pool has no effective stake. | Wait until at least one address has staked. |
